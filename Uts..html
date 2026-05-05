@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Sistem Input Pendaftaran</title>
+
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+}
+
+/* HEADER */
+.header {
+    text-align: center;
+    padding: 20px;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* CONTAINER */
+.container {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+/* FORM CARD */
+.form-box {
+    background: white;
+    padding: 20px;
+    width: 350px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.form-box h3 {
+    text-align: center;
+}
+
+.form-box input, .form-box select {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 7px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* BUTTON */
+.btn {
+    width: 48%;
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-simpan {
+    background: #28a745;
+    color: white;
+}
+
+.btn-reset {
+    background: #dc3545;
+    color: white;
+}
+
+/* TABLE */
+.table-box {
+    background: white;
+    margin: 20px;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th {
+    background: #007bff;
+    color: white;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 6px;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background: #f2f2f2;
+}
+
+/* REKAP */
+.rekap {
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: right;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">SISTEM INPUT PENDAFTARAN</div>
+
+<div class="container">
+<div class="form-box">
+
+<h3>Form Pendaftaran</h3>
+
+<input type="number" id="jumlahData" placeholder="Jumlah Input Data">
+
+<input type="text" id="kode" placeholder="Kode Pendaftaran">
+
+<input type="text" id="nama" placeholder="Nama Pendaftar">
+
+<select id="jk">
+    <option>Laki-laki</option>
+    <option>Perempuan</option>
+</select>
+
+<input type="text" id="ttl" placeholder="Tempat, Tanggal Lahir">
+
+<input type="text" id="sekolah" placeholder="Asal Sekolah">
+
+<input type="text" id="ortu" placeholder="Pekerjaan Ortu">
+
+<input type="number" id="tes" placeholder="Nilai Tes">
+
+<input type="number" id="mat" placeholder="Matematika">
+
+<input type="number" id="ing" placeholder="Bahasa Inggris">
+
+<input type="number" id="umum" placeholder="Pengetahuan Umum">
+
+<div style="display:flex; justify-content: space-between;">
+    <button class="btn btn-simpan" onclick="tambahData()">Simpan</button>
+    <button class="btn btn-reset" onclick="resetForm()">Reset</button>
+</div>
+
+</div>
+</div>
+
+<div class="table-box">
+<h3>Tabel Data</h3>
+
+<table id="tabel">
+<tr>
+    <th>Kode</th>
+    <th>Nama</th>
+    <th>JK</th>
+    <th>TTL</th>
+    <th>Sekolah</th>
+    <th>Ortu</th>
+    <th>Tes</th>
+    <th>Mat</th>
+    <th>Ing</th>
+    <th>Umum</th>
+    <th>Rata-rata</th>
+    <th>Ket</th>
+    <th>Ket Tes</th>
+</tr>
+</table>
+
+<div class="rekap" id="rekap"></div>
+</div>
+
+<script>
+let jumlah = 0;
+let lulus = 0;
+let tidak = 0;
+
+function getGedung(kode){
+    let huruf = kode.charAt(0).toUpperCase();
+    if(huruf === "A") return "Gedung A";
+    if(huruf === "B") return "Gedung B";
+    if(huruf === "V") return "Victor";
+    return "-";
+}
+
+function tambahData(){
+    let kode = document.getElementById("kode").value;
+    let nama = document.getElementById("nama").value;
+    let jk = document.getElementById("jk").value;
+    let ttl = document.getElementById("ttl").value;
+    let sekolah = document.getElementById("sekolah").value;
+    let ortu = document.getElementById("ortu").value;
+    let tes = document.getElementById("tes").value;
+
+    let mat = parseFloat(document.getElementById("mat").value);
+    let ing = parseFloat(document.getElementById("ing").value);
+    let umum = parseFloat(document.getElementById("umum").value);
+
+    let rata = (mat + ing + umum) / 3;
+    let ket = "";
+
+    if(rata >= 70){
+        ket = "Lulus";
+        lulus++;
+    } else if(rata >= 60){
+        ket = "Cadangan";
+    } else {
+        ket = "Tidak Lulus";
+        tidak++;
+    }
+
+    jumlah++;
+
+    let ketTes = getGedung(kode);
+
+    let tabel = document.getElementById("tabel");
+    let row = tabel.insertRow();
+
+    row.insertCell(0).innerHTML = kode;
+    row.insertCell(1).innerHTML = nama;
+    row.insertCell(2).innerHTML = jk;
+    row.insertCell(3).innerHTML = ttl;
+    row.insertCell(4).innerHTML = sekolah;
+    row.insertCell(5).innerHTML = ortu;
+    row.insertCell(6).innerHTML = tes;
+    row.insertCell(7).innerHTML = mat;
+    row.insertCell(8).innerHTML = ing;
+    row.insertCell(9).innerHTML = umum;
+    row.insertCell(10).innerHTML = rata.toFixed(2);
+    row.insertCell(11).innerHTML = ket;
+    row.insertCell(12).innerHTML = ketTes;
+
+    document.getElementById("rekap").innerHTML =
+        "Jumlah Pendaftar: " + jumlah +
+        " | Lulus: " + lulus +
+        " | Tidak Lulus: " + tidak;
+}
+
+function resetForm(){
+    document.querySelectorAll("input").forEach(i => i.value = "");
+}
+</script>
+
+</body>
+</html>
